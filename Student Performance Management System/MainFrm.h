@@ -92,7 +92,7 @@ public:
 	afx_msg void OnMathlinegraphs();
 	afx_msg void OnOophistogram();
 	afx_msg void OnOoplinegraphs();
-	//void OnDraw(CDC* pDC);
+	
 };
 
 

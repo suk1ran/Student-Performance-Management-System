@@ -195,6 +195,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
+//载入高数成绩
 void CMainFrame::LoadMath()
 {
 	std::ifstream ifs("StudentData.txt");//读文件
@@ -247,6 +248,7 @@ void CMainFrame::LoadMath()
 	ifs.close();	//关闭文件
 }
 
+//载入面向对象成绩
 void CMainFrame::LoadOOP()
 {
 	std::ifstream ifs("StudentData.txt");//读文件
@@ -299,6 +301,7 @@ void CMainFrame::LoadOOP()
 	ifs.close();	//关闭文件
 }
 
+//绘制直方图
 void CMainFrame::DrawHistogram(CDC* pDC, std::vector<double>, int number)
 {
 	CRect rc;
@@ -354,6 +357,7 @@ void CMainFrame::DrawHistogram(CDC* pDC, std::vector<double>, int number)
 	
 }
 
+//绘制折线图
 void CMainFrame::DrawLineChart(CDC* pDC, std::vector<double>, int number)
 {
 	
@@ -630,7 +634,7 @@ void CMainFrame::OnPaint()
 	
 }
 
-
+//点击菜单中的“绘制高数直方图”选项
 void CMainFrame::OnMathhistogram()
 {
 	// TODO: 在此添加命令处理程序代码
@@ -648,7 +652,7 @@ void CMainFrame::OnMathhistogram()
 	DrawHistogram(pDC, score, score.size());
 }
 
-
+//点击菜单中的“绘制高数折线图”选项
 void CMainFrame::OnMathlinegraphs()
 {
 	// TODO: 在此添加命令处理程序代码
@@ -666,7 +670,7 @@ void CMainFrame::OnMathlinegraphs()
 	DrawLineChart(pDC, score, score.size());
 }
 
-
+//点击菜单中的“绘制面向对象直方图”选项
 void CMainFrame::OnOophistogram()
 {
 	// TODO: 在此添加命令处理程序代码
@@ -684,7 +688,7 @@ void CMainFrame::OnOophistogram()
 	DrawHistogram(pDC, score, score.size());
 }
 
-
+//点击菜单中的“绘制面向对象折线图”选项
 void CMainFrame::OnOoplinegraphs()
 {
 	// TODO: 在此添加命令处理程序代码
@@ -702,9 +706,3 @@ void CMainFrame::OnOoplinegraphs()
 	DrawLineChart(pDC, score, score.size());
 }
 
-//void CMainFrame::OnDraw(CDC* pDC)
-//{
-//	
-//	
-//	DrawHistogram(pDC, score, score.size());
-//}
