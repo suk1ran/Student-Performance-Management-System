@@ -47,7 +47,7 @@ BOOL CStudentPerformanceManagementSystemDoc::OnNewDocument()
 	// (SDI 文档将重用该文档)
 	
 	//设置左标题
-	SetTitle(TEXT("天气多云转晴"));
+	SetTitle(TEXT("he277"));
 
 	return TRUE;
 }
