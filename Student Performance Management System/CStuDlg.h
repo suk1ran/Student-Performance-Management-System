@@ -42,22 +42,22 @@ public:
 //	afx_msg void OnEnChangeEdit1();
 	virtual BOOL OnInitDialog();
 	
-	CListCtrl m_ReportList;
+	CListCtrl m_ReportList;//关于显示学生信息的List Control控件的添加变量
 	afx_msg void OnBnClickedSortOop();
 	afx_msg void OnBnClickedGirl();
-	CString m_number;
-	CString m_name;
-	CString m_age;
-	CString m_address;
-	CString m_math;
-	CString m_oop;
+	CString m_number;//关于学号的Edit Control控件的添加变量
+	CString m_name;//关于姓名的Edit Control控件的添加变量
+	CString m_age;//关于年龄的Edit Control控件的添加变量
+	CString m_address;//关于地址的Edit Control控件的添加变量
+	CString m_math;//关于高等数学成绩的Edit Control控件的添加变量
+	CString m_oop;//关于面向对象成绩的Edit Control控件的添加变量
 
 	//不是通过添加变量
-	CString m_gender;
+	CString m_gender;//关于性别的变量
 
 	afx_msg void OnBnClickedAdd();
 	afx_msg void OnBnClickedBoy();
-	CComboBox m_choose;
+	CComboBox m_choose;//关于切换排序方式的ComboBox控件的添加变量
 	afx_msg void OnBnClickedSortMath();
 	afx_msg void OnNMClickShow(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedClear();
@@ -65,6 +65,7 @@ public:
 	afx_msg void OnBnClickedFind();
 	afx_msg void OnHdnItemchangedShow(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedDelete();
+	afx_msg void OnBnClickedCancel();
 };
 
 
@@ -98,18 +99,6 @@ public:
 	//修改学生
 	void UpdateStudent();
 
-	//高数升序
-	bool SortMathAsc(const Student& s1, const Student& s2);
-
-	//高数降序
-	bool SortMathDesc(const Student& s1, const Student& s2);
-
-	//面向对象升序
-	bool SortOOPAsc(const Student& s1, const Student& s2);
-
-	//面向对象降序
-	bool SortOOPDesc(const Student& s1, const Student& s2);
-
 	//写入学生数据
 	void SaveToFile();
 
@@ -117,6 +106,18 @@ public:
 	void LoadFromFile();
 
 };
+
+//高数升序
+bool SortMathAsc(const Student& s1, const Student& s2);
+
+//高数降序
+bool SortMathDesc(const Student& s1, const Student& s2);
+
+//面向对象升序
+bool SortOOPAsc(const Student& s1, const Student& s2);
+
+//面向对象降序
+bool SortOOPDesc(const Student& s1, const Student& s2);
 
 //重载==运算符
 bool operator == (const Student& s1, const Student& s2);

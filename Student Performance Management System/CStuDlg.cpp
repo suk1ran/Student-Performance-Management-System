@@ -56,6 +56,7 @@ ON_BN_CLICKED(IDC_CLEAR, &CStuDlg::OnBnClickedClear)
 ON_BN_CLICKED(IDC_FIND, &CStuDlg::OnBnClickedFind)
 ON_BN_CLICKED(IDC_UPDATE, &CStuDlg::OnBnClickedUpdate)
 ON_BN_CLICKED(IDC_DELETE, &CStuDlg::OnBnClickedDelete)
+ON_BN_CLICKED(IDC_CANCEL, &CStuDlg::OnBnClickedCancel)
 ON_NOTIFY(NM_CLICK, IDC_SHOW, &CStuDlg::OnNMClickShow)
 ON_NOTIFY(LVN_ITEMCHANGED, IDC_SHOW, &CStuDlg::OnHdnItemchangedShow)
 END_MESSAGE_MAP()
@@ -344,9 +345,9 @@ void CStuDlg::OnBnClickedAdd()
 	//把m_xx的部分数据（CString类型）转换为所需类型
 	int age;
 	double math, oop;
-	age = _ttoi(m_age);
-	math = _wtof(m_math);
-	oop = _wtof(m_oop);
+	age = _ttoi(m_age);//_ttoi是CString转int
+	math = _wtof(m_math);//_wtof是CString转double
+	oop = _wtof(m_oop);//_wtof是CString转double
 	file.AddStudent(m_number, m_name, m_gender, age, m_address, math, oop);
 	file.SaveToFile();
 	
@@ -717,7 +718,7 @@ void CStuDlg::OnHdnItemchangedShow(NMHDR* pNMHDR, LRESULT* pResult)
 	LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
 	// TODO: 在此添加控件通知处理程序代码
 
-	CString strCol;    // 选择某一列 
+	CString strCol;    // 选择某一行 
 	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 	if (pNMListView->uChanged == LVIF_STATE)
 	{
@@ -865,4 +866,11 @@ void CStuDlg::OnBnClickedDelete()
 	}
 
 	MessageBox(TEXT("删除成功"));
+}
+
+//退出对话框
+void CStuDlg::OnBnClickedCancel()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	EndDialog(0);
 }

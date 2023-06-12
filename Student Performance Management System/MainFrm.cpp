@@ -305,16 +305,18 @@ void CMainFrame::LoadOOP()
 void CMainFrame::DrawHistogram(CDC* pDC, std::vector<double>, int number)
 {
 	CRect rc;
-	GetClientRect(rc);
+	GetClientRect(rc);//获取当前客户区大小的矩形
+	//将矩形向中心位置缩小（以移动边的方式）（第一个参数是左右，第二个参数是上下）
 	rc.DeflateRect(140, 140);
-	CBrush brush1(HS_BDIAGONAL, RGB(96, 192, 255));
-	CBrush brush2(HS_FDIAGONAL, RGB(96, 192, 255));
-	CPen pen(PS_INSIDEFRAME, 2, RGB(96, 192, 255));
-	int n = 5;//定义有五个区间
+	CBrush brush1(HS_BDIAGONAL, RGB(255, 51, 153));//45 度向上向左向右阴影
+	CBrush brush2(HS_FDIAGONAL, RGB(255, 51, 153));//45 度向下向左向右阴影
+	//笔是坚实的。 当此笔用于采用边界矩形的任何 GDI 绘图函数中时，图形的尺寸会缩小，使其完全适合边界矩形，同时考虑到笔的宽度。 这仅适用于几何笔。
+	CPen pen(PS_INSIDEFRAME, 2, RGB(255, 51, 153));
+	int n = 5;//五个区间
 	int width = rc.Width() / n;//一个区间的宽度
 
-	int s[5] = { 0 };//区间人数置初值
-	for (int i = 0; i < number; i++)
+	int s[5] = { 0 };//区间人数（初始值为零）
+	for (int i = 0; i < number; i++)//统计各区间人数
 	{
 		int m_score = score[i];
 		if (m_score < 60) s[0]++;
@@ -322,39 +324,77 @@ void CMainFrame::DrawHistogram(CDC* pDC, std::vector<double>, int number)
 		else if (m_score < 80) s[2]++;
 		else if (m_score < 90) s[3]++;
 		else s[4]++;
-	}//统计各区间人数
+	}
 	int max_s = s[0];
-	for (int i = 0; i < n; i++)
-		if (max_s < s[i]) max_s = s[i];//找出人数最大的区间
-	int per_Height = rc.Height() / max_s;//算出一个人代表的矩形高度
-	CRect ps_rect(rc);	//直方图的矩形
-	CRect str_rect(rc);	//各区间注释矩形，用于定位
-	ps_rect.right = ps_rect.left + width;
-	CBrush* oldBrush = pDC->SelectObject(&brush1);//保存旧的画刷设置
-	CPen* oldPen = pDC->SelectObject(&pen);//保存旧的画笔设置
-	CString str[5] = { _T("<60"),_T("60-70"),_T("70-80"),_T("80-90"),_T(">=90") };//将每个区间的注释先存储
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < n; i++)//找出人数最多的区间
+	{
+		if (max_s < s[i])
+		{
+			max_s = s[i];
+		}
+	}
+	int per_Height = rc.Height() / max_s;//算出一个学生代表的矩形高度
+	CRect ps_rect(rc);	//直方图的区间矩形
+	CRect str_rect(rc);	//用于显示每个区间代表的分数范围
+	ps_rect.right = ps_rect.left + width;//确定每个区间的大小
+	CPen* oldPen = pDC->SelectObject(&pen);//使画笔生效
+	//记录每个区间的范围
+	CString str[5] = { _T("<60"),_T("60～70"),_T("70～80"),_T("80～90"),_T(">=90") };
+	for (int i = 0; i < n; i++)//从左到右一个个绘制区间
 	{
 		ps_rect.top = ps_rect.bottom - per_Height * s[i] - 2;	//该区间的高度
-		if (i % 2)  pDC->SelectObject(&brush2);
-		else pDC->SelectObject(&brush1);	//每隔一个区间用不同的斜线，左斜或右斜
-		pDC->Rectangle(ps_rect);	//绘制矩形
-		if (s[i] > 0)
+		if (i % 2)//每隔一个区间用不同的斜线
 		{
-			CString str1;
-			str1.Format(_T("%d人"), s[i]);//设置str1的内容
-			pDC->DrawText(str1, ps_rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);//在矩形中间显示人数
+			pDC->SelectObject(&brush2);//右斜
 		}
+		else
+		{
+			pDC->SelectObject(&brush1);//左斜
+		}
+		pDC->Rectangle(ps_rect);	//绘制矩形
+		if (s[i] >= 0)
+		{
+			CString str;//用于显示一个区间的人数
+			str.Format(_T("%d人"), s[i]);//在矩形中间显示人数
+			pDC->DrawText(str, ps_rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+		}
+		//开始处理显示区间分数范围的矩形
 		str_rect = ps_rect;
 		str_rect.bottom = ps_rect.bottom + 20;
 		str_rect.top = ps_rect.bottom + 2;
 		pDC->DrawText(str[i], str_rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
-		ps_rect.OffsetRect(width, 0);//移动矩形框的位置,水平方向移动width
-		
+		//水平方向移动区间矩形width个长度，否则五个区间都显示在同一块区域
+		ps_rect.OffsetRect(width, 0);
 	}
-	pDC->SelectObject(&oldBrush);
-	pDC->SelectObject(&oldPen);	//将画刷，画笔设置回原来的样子
-	
+	if (m_ChartType == HistogramOfMath)
+	{
+		CString str2;//用于显示图表参数
+
+		CRect crect(rc);//显示区域
+		crect.MoveToXY(900, -250);//移动到右上角
+		str2.Format(_T("统计学生总数：%d人"), score.size());//设置显示的内容
+		pDC->DrawText(str2, crect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
+		crect.MoveToXY(900, -275);//往上移动
+		str2 = "统计类型：高等数学成绩";//设置显示的内容
+		pDC->DrawText(str2, crect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+	}
+	else if (m_ChartType == HistogramOfOOP)
+	{
+		CString str2;//用于显示一个区间的人数
+
+		CRect crect(rc);//显示区域
+		crect.MoveToXY(900, -250);//移动到右上角
+		str2.Format(_T("统计学生总数：%d人"), score.size());//设置显示的内容
+		pDC->DrawText(str2, crect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
+		crect.MoveToXY(900, -275);//往上移动
+		str2 = "统计类型：面向对象成绩";//设置显示的内容
+		pDC->DrawText(str2, crect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+	}
+	DeleteObject(brush1);//回收左斜画刷
+	DeleteObject(brush2);//回收右斜画刷
+	DeleteObject(pen);//回收画笔资源
 }
 
 //绘制折线图
@@ -600,36 +640,7 @@ void CMainFrame::OnPaint()
 	// TODO: 在此处添加消息处理程序代码
 	// 不为绘图消息调用 CFrameWndEx::OnPaint()
 
-	 // 获取窗口大小
-	/*CRect rect;
-	GetClientRect(&rect);
-	int width = rect.right - rect.left;
-	int height = rect.bottom - rect.top;
-
-	CDC* pDC = GetDC();*/
-	//CDC* pDC = GetWindowDC();
-	//// 根据图形类型绘制对应图形
-	//if (m_ChartType == HistogramOfMath)
-	//{
-	//	DrawHistogram(pDC, score, score.size());
-	//}
-	//else if (m_ChartType == LineChartOfMath)
-	//{
-	//	//DrawLineChart(pDC, 50, height - 50, width - 100, height - 100);
-	//}
-	//else if (m_ChartType == HistogramOfOOP)
-	//{
-	//	DrawHistogram(pDC, score, score.size());
-	//}
-	//else if (m_ChartType == HistogramOfOOP)
-	//{
-	//	//DrawLineChart(pDC, 50, height - 50, width - 100, height - 100);
-	//}
-	/*std::ifstream file("D:\\score.txt", std::ios::in);
-	std::vector<double> datas;
-	double data;
-	while (file >> data)
-		datas.push_back(data);*/
+	
 	
 	
 }
@@ -648,8 +659,12 @@ void CMainFrame::OnMathhistogram()
 	int pointHeight = rectDlg.Height();		// 获取窗体高度
 	RedrawWindow(CRect(0, 0, pointWidth, pointHeight));		// 重绘指定区域
 
+
 	CDC* pDC = GetWindowDC();
 	DrawHistogram(pDC, score, score.size());
+
+
+	
 }
 
 //点击菜单中的“绘制高数折线图”选项

@@ -24,7 +24,7 @@ public:
 
 // 操作
 public:
-	// 声明一个数组存储学生成绩数据
+	//存储学生成绩数据
 	std::vector<double> score;
 
 	//记录学生个数
@@ -35,7 +35,7 @@ public:
 		HistogramOfMath, HistogramOfOOP, LineChartOfMath, LineChartOfOOP
 	};//0是高数直方图，1是面向对象直方图，2是高数折线图，3是面向对象折线图
 
-	//记录图标种类
+	//记录图表种类
 	int m_ChartType;
 
 	//载入学生高数成绩
