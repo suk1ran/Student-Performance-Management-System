@@ -87,7 +87,7 @@
 #define IDD_DIALOG1                     310
 #define IDD_STUDENT                     310
 #define IDD_STU                         310
-#define IDI_STRAWBERRY                  312
+#define IDI_STRAWBERRY                  127
 #define IDC_EDIT1                       1000
 #define IDC_EDIT2                       1001
 #define IDC_AGE                         1001
@@ -138,13 +138,17 @@
 #define ID_MATHLINEGRAPHS               32779
 #define ID_OOPHISTOGRAM                 32780
 #define ID_OOPLINEGRAPHS                32781
+#define ID_32782                        32782
+#define ID_RANDOMDATA                   32783
+#define ID_32784                        32784
+#define ID_OPENDATAFILE                 32785
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        313
-#define _APS_NEXT_COMMAND_VALUE         32782
+#define _APS_NEXT_COMMAND_VALUE         32786
 #define _APS_NEXT_CONTROL_VALUE         1025
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

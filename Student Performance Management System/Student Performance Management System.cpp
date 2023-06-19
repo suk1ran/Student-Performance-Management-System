@@ -14,6 +14,8 @@
 
 #include "CStuDlg.h"
 
+
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -29,6 +31,8 @@ BEGIN_MESSAGE_MAP(CStudentPerformanceManagementSystemApp, CWinAppEx)
 	// 标准打印设置命令
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
 	ON_COMMAND(ID_STUDENT, &CStudentPerformanceManagementSystemApp::OnStuDlg)
+	ON_COMMAND(ID_RANDOMDATA, &CStudentPerformanceManagementSystemApp::OnRandomdata)
+	ON_COMMAND(ID_OPENDATAFILE, &CStudentPerformanceManagementSystemApp::OnOpendatafile)
 END_MESSAGE_MAP()
 
 
@@ -231,3 +235,124 @@ void CStudentPerformanceManagementSystemApp::SaveCustomState()
 
 
 
+
+string RandStr(const int len)  //参数为字符串的长度
+{
+	string str;                 //声明用来保存随机字符串的str
+	char c;                     //声明字符c，用来保存随机生成的字符
+
+	//循环向字符串中添加随机生成的字符
+	for (int idx = 0; idx < len; idx++)
+	{
+		//rand()%26是取余，余数为0~25加上'a',就是字母a~z
+		c = 'a' + rand() % 26;
+		str.push_back(c);
+	}
+	return str;
+}
+void CStudentPerformanceManagementSystemApp::OnRandomdata()
+{
+	// TODO: 在此添加命令处理程序代码
+	srand((unsigned int)(time(NULL)));
+
+	int a = 0;//左闭，控制成绩
+	int b = 0;//右开
+
+	int c = 45;//控制生成数量
+	int d = 55;
+
+	int range= (rand() % (d - c)) + c;
+	int eachrange1 = (rand() % (7 - 4)) + 4;
+	int eachrange2 = (rand() % (13 - 10)) + 10;
+	int eachrange3 = (rand() % (19 - 16)) + 16;
+	int eachrange4 = (rand() % (16 - 9)) + 9;
+	//int eachrange5 = range - eachrange1 - eachrange2 - eachrange3 - eachrange4;
+	//要取得[a, b)的随机整数，使用(rand() % (b - a)) + a;
+	for (int i = 0; i < range; i++)
+	{
+
+
+		if (i < eachrange1)//1区间
+		{
+			a = 0;
+			b = 60;
+
+		}
+		else if (i < eachrange1 + eachrange2)//2区间
+		{
+			a = 60;
+			b = 70;
+		}
+		else if (i < eachrange1 + eachrange2 + eachrange3)//3区间
+		{
+			a = 70;
+			b = 80;
+		}
+		else if (i < eachrange1 + eachrange2 + eachrange3 + eachrange4)//4区间
+		{
+			a = 80;
+			b = 90;
+		}
+		else//5区间
+		{
+			a = 90;
+			b = 100;
+		}
+
+		string str;                 /*声明字符串*/
+		str = RandStr(3);         /*调用函数 输入字符串长度*/
+
+
+		string s;                 /*声明字符串*/
+		s = RandStr(4);
+
+		int t = rand() % 2;
+		string ss;
+		if (t == 0)
+		{
+			ss = "男";
+		}
+		else
+		{
+			ss = "女";
+		}
+
+		//要取得[a, b)的随机整数，使用(rand() % (b - a)) + a;
+		int number = (rand() % (999999 - 10)) + 10;
+		string name = str;
+		string gender = ss;
+		int age = (rand() % (99 - 10)) + 10;
+		string address = s;
+
+		int math = (rand() % (b - a)) + a;
+		int oop = (rand() % (b - a)) + a;
+
+		ofstream ofs;//写文件(默认ios::out，每次写都是先清空后写)
+
+		ofs.open("StudentData.txt", std::ios::app);
+
+
+		ofs << number << "|";
+		ofs << name << "|";
+		ofs << gender << "|";
+		ofs << age << "|";
+		ofs << address << "|";
+		ofs << math << "|";
+		ofs << oop << endl;
+
+
+		ofs.close();
+	}
+	//MessageBox(TEXT("成功添加随机学生信息"));
+}
+
+
+void CStudentPerformanceManagementSystemApp::OnOpendatafile()
+{
+	// TODO: 在此添加命令处理程序代码
+	// 指定文件名
+	LPCTSTR file_name = L"StudentData.txt";
+
+	// 打开文件
+	HINSTANCE hInstance = ShellExecute(NULL, L"open", file_name, NULL, NULL, SW_SHOWNORMAL);
+}

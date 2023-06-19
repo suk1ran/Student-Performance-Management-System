@@ -3,20 +3,19 @@
 
 #include <fstream>
 #include <iostream>
-
 #include <string>
 #include <list>
 
-
-
 #include <afx.h>
 #include <afxwin.h>
-
-
 #include "afxtempl.h"
-using namespace std;
+
 using std::string;
 using std::list;
+using std::ofstream;
+using std::ifstream;
+using std::endl;
+using std::stod;
 
 
 // CStuDlg 对话框
@@ -66,6 +65,7 @@ public:
 	afx_msg void OnHdnItemchangedShow(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedDelete();
 	afx_msg void OnBnClickedCancel();
+	virtual void OnOK();
 };
 
 

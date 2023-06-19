@@ -31,9 +31,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_WM_SETTINGCHANGE()
 	ON_WM_PAINT()
 	ON_COMMAND(ID_MATHHISTOGRAM, &CMainFrame::OnMathhistogram)
-	ON_COMMAND(ID_MATHLINEGRAPHS, &CMainFrame::OnMathlinegraphs)
 	ON_COMMAND(ID_OOPHISTOGRAM, &CMainFrame::OnOophistogram)
-	ON_COMMAND(ID_OOPLINEGRAPHS, &CMainFrame::OnOoplinegraphs)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -397,12 +395,6 @@ void CMainFrame::DrawHistogram(CDC* pDC, std::vector<double>, int number)
 	DeleteObject(pen);//回收画笔资源
 }
 
-//绘制折线图
-void CMainFrame::DrawLineChart(CDC* pDC, std::vector<double>, int number)
-{
-	
-}
-
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if( !CFrameWndEx::PreCreateWindow(cs) )
@@ -640,10 +632,8 @@ void CMainFrame::OnPaint()
 	// TODO: 在此处添加消息处理程序代码
 	// 不为绘图消息调用 CFrameWndEx::OnPaint()
 
-	
-	
-	
 }
+	
 
 //点击菜单中的“绘制高数直方图”选项
 void CMainFrame::OnMathhistogram()
@@ -651,6 +641,12 @@ void CMainFrame::OnMathhistogram()
 	// TODO: 在此添加命令处理程序代码
 	m_ChartType = HistogramOfMath;
 	LoadMath();
+
+	if (score.size() == 0)
+	{
+		MessageBox(TEXT("暂无学生成绩数据"));
+		return;
+	}
 	
 	// 清空绘制区域
 	CRect rectDlg;
@@ -667,23 +663,6 @@ void CMainFrame::OnMathhistogram()
 	
 }
 
-//点击菜单中的“绘制高数折线图”选项
-void CMainFrame::OnMathlinegraphs()
-{
-	// TODO: 在此添加命令处理程序代码
-	m_ChartType = LineChartOfMath;
-	LoadMath();
-	
-	// 清空绘制区域
-	CRect rectDlg;
-	GetClientRect(rectDlg);			// 获得窗体的大小
-	int pointWidth = rectDlg.Width();		// 获取窗体宽度
-	int pointHeight = rectDlg.Height();		// 获取窗体高度
-	RedrawWindow(CRect(0, 0, pointWidth, pointHeight));		// 重绘指定区域
-
-	CDC* pDC = GetWindowDC();
-	DrawLineChart(pDC, score, score.size());
-}
 
 //点击菜单中的“绘制面向对象直方图”选项
 void CMainFrame::OnOophistogram()
@@ -691,6 +670,12 @@ void CMainFrame::OnOophistogram()
 	// TODO: 在此添加命令处理程序代码
 	m_ChartType = HistogramOfOOP;
 	LoadOOP();
+
+	if (score.size() == 0)
+	{
+		MessageBox(TEXT("暂无学生成绩数据"));
+		return;
+	}
 	
 	// 清空绘制区域
 	CRect rectDlg;
@@ -703,21 +688,4 @@ void CMainFrame::OnOophistogram()
 	DrawHistogram(pDC, score, score.size());
 }
 
-//点击菜单中的“绘制面向对象折线图”选项
-void CMainFrame::OnOoplinegraphs()
-{
-	// TODO: 在此添加命令处理程序代码
-	m_ChartType = HistogramOfOOP;
-	LoadOOP();
-	
-	// 清空绘制区域
-	CRect rectDlg;
-	GetClientRect(rectDlg);			// 获得窗体的大小
-	int pointWidth = rectDlg.Width();		// 获取窗体宽度
-	int pointHeight = rectDlg.Height();		// 获取窗体高度
-	RedrawWindow(CRect(0, 0, pointWidth, pointHeight));		// 重绘指定区域
-
-	CDC* pDC = GetWindowDC();
-	DrawLineChart(pDC, score, score.size());
-}
 

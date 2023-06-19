@@ -32,8 +32,8 @@ public:
 
 	//选择图表种类
 	enum ChartType {
-		HistogramOfMath, HistogramOfOOP, LineChartOfMath, LineChartOfOOP
-	};//0是高数直方图，1是面向对象直方图，2是高数折线图，3是面向对象折线图
+		HistogramOfMath, HistogramOfOOP
+	};//0是高数直方图，1是面向对象直方图
 
 	//记录图表种类
 	int m_ChartType;
@@ -46,10 +46,6 @@ public:
 
 	//绘制直方图
 	void DrawHistogram(CDC* pDC, std::vector<double>, int number);
-
-	//绘制折线图
-	void DrawLineChart(CDC* pDC, std::vector<double>, int number);
-
 
 // 重写
 public:
@@ -89,9 +85,7 @@ protected:
 public:
 	afx_msg void OnPaint();
 	afx_msg void OnMathhistogram();
-	afx_msg void OnMathlinegraphs();
 	afx_msg void OnOophistogram();
-	afx_msg void OnOoplinegraphs();
 	
 };
 

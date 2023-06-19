@@ -8,7 +8,7 @@
 
 
 #include "afxwin.h"
-#include <string>
+
 
 // CStuDlg 对话框
 
@@ -873,4 +873,12 @@ void CStuDlg::OnBnClickedCancel()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	EndDialog(0);
+}
+
+//禁用回车退出对话框功能
+void CStuDlg::OnOK()
+{
+	// TODO: 在此添加专用代码和/或调用基类
+
+	//CDialogEx::OnOK();
 }

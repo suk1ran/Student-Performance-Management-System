@@ -9,6 +9,11 @@
 
 #include "resource.h"       // 主符号
 
+//用于随机生成学生信息
+#include <string>
+#include <iostream>
+using std::cout;
+
 
 // CStudentPerformanceManagementSystemApp:
 // 有关此类的实现，请参阅 Student Performance Management System.cpp
@@ -36,6 +41,8 @@ public:
 	afx_msg void OnAppAbout();
 	afx_msg void OnStuDlg();
 	DECLARE_MESSAGE_MAP()
+		afx_msg void OnRandomdata();
+	afx_msg void OnOpendatafile();
 };
 
 extern CStudentPerformanceManagementSystemApp theApp;
